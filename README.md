@@ -1,69 +1,84 @@
-# 🎮 たまごっち風デモ
+# 🌸 このみちゃんの たまごっち 🌸
 
-このみちゃん専用のたまごっち風ブラウザゲームです！
+6歳女児（このみちゃん）向けの、かわいいたまごっち風ドット絵キャラクターのブラウザデモです。
 
-## ✨ 特徴
+## ✨ Features
 
-- 32x32ピクセルのかわいいドット絵キャラクター
-- 3つの表情（ふつう・うれしい・ねむい）
-- ぴょこぴょこ動く待機アニメーション
-- パステルカラーのかわいい背景
-- iPhone SE2（375x667px）対応
+- **32x32pxドット絵キャラクター** - Pillowで描いたパステルカラーのかわいいキャラ
+- **3つの表情** - 通常、嬉しい、眠い
+- **待機アニメーション** - ぴょこぴょこ跳ねる動き
+- **インタラクティブ** - ボタンで表情を切り替え
+- **レスポンシブ** - iPhone SE2（375x667px）を意識したデザイン
 
-## 🎨 使用技術
+## 🎮 Demo
 
-- **画像生成**: Python + Pillow
-- **フロントエンド**: HTML + CSS + JavaScript
-- **デプロイ**: GitHub Pages
+**👉 [こちらからプレイ！](https://ximanuki.github.io/tamagotchi-demo/)**
 
-## 📂 ファイル構成
+## 🎨 技術スタック
+
+- **Python 3** + **Pillow** - ドット絵生成
+- **HTML5** + **CSS3** - UI/アニメーション
+- **Vanilla JavaScript** - インタラクション
+- **GitHub Pages** - ホスティング
+
+## 📁 プロジェクト構成
 
 ```
 tamagotchi-demo/
-├── index.html              # メインHTMLファイル
-├── assets/                 # 画像アセット
-│   ├── spritesheet.png     # 全フレームのスプライトシート
-│   ├── character_normal.png
-│   ├── character_happy.png
-│   ├── character_sleepy.png
-│   ├── character_bounce1.png
-│   ├── character_bounce2.png
-│   └── character_bounce3.png
-├── scripts/                # 生成スクリプト
-│   └── generate_character.py
-└── README.md
+├── index.html                    # メインHTMLファイル
+├── assets/
+│   ├── character_sprite.png      # スプライトシート（6フレーム）
+│   └── preview/                  # 個別フレームのプレビュー（8倍拡大）
+│       ├── normal.png
+│       ├── happy.png
+│       ├── sleepy.png
+│       ├── bounce1.png
+│       ├── bounce2.png
+│       └── bounce3.png
+└── scripts/
+    └── generate_character.py     # ドット絵生成スクリプト
 ```
 
-## 🚀 使い方
+## 🔧 ドット絵の再生成
 
-### ローカルで見る
-```bash
-open ~/clawd/games/tamagotchi-demo/index.html
-```
+キャラクターを変更したい場合：
 
-### キャラクターを再生成
 ```bash
-cd ~/clawd/games/tamagotchi-demo
 python3 scripts/generate_character.py
 ```
 
-## 🎮 遊び方
+## 🎨 カラーパレット
 
-1. **ふつう** ボタン: げんきな表情
-2. **うれしい** ボタン: 喜んでハートが出る！
-3. **ねむい** ボタン: ねむねむな表情
+```python
+'body': (255, 192, 203),          # パステルピンク
+'body_shadow': (255, 160, 180),   # 少し濃いピンク
+'white': (255, 255, 255),         # 白（ハイライト）
+'eye': (88, 88, 88),              # ダークグレー（目・口）
+'cheek': (255, 140, 160),         # チーク
+'happy': (255, 200, 100),         # ハッピー色（黄色）
+'sleep': (200, 200, 230),         # 睡眠色（薄紫）
+```
 
-キャラクターはずっとぴょこぴょこ動いています♪
+## 📱 操作方法
 
-## 🌟 今後の拡張案
+- **✨ なでなで** - 嬉しい表情に変わります
+- **😴 ねんね** - 眠い表情でゆらゆらします
+- **🌸 げんき** - 元気な表情に戻ります
 
-- [ ] ごはんボタン
-- [ ] あそびボタン
-- [ ] おふろボタン
-- [ ] ミニゲーム
-- [ ] 成長システム
-- [ ] 複数のキャラクター
+キャラクターは時々自動で反応することも！
+
+## 🌟 こだわりポイント
+
+1. **パステルカラー** - 6歳女児向けに優しい色合い
+2. **丸っこいデザイン** - たまごっち風のかわいいフォルム
+3. **ぴょこぴょこアニメ** - 見ているだけで楽しい待機モーション
+4. **キラキラエフェクト** - 背景の星がキラキラ
+5. **自動反応** - 時々勝手に動いてサプライズ
+
+## 📄 License
+
+MIT License - 自由に使ってね！
 
 ---
 
-Made with ❤️ for このみちゃん
+Made with 💕 by Molt (Clawdbot) for このみちゃん
