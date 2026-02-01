@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>たまごっち風 フレームアニメーション</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .character-stage {
+            width: 320px;
+            height: 320px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-radius: 20px;
+            border: 4px solid #dfe6e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #character {
+            width: 128px;
+            height: 128px;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            transform: scale(4);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-idle {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+        }
+
+        .btn-walk {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+        }
+
+        .btn-eat {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            color: white;
+        }
+
+        .btn-sleep {
+            background: linear-gradient(135deg, #81ecec 0%, #00b894 100%);
+            color: white;
+        }
+
+        .btn-happy {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            color: #2d3436;
+        }
+
+        button.active {
+            outline: 4px solid #fff;
+            outline-offset: 2px;
+        }
+
+        .info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .info p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        .info strong {
+            color: #667eea;
+        }
+
+        .github-link {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .github-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .github-link a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(4); }
+            50% { transform: scale(4.1); }
+        }
+
+        .character-stage:hover #character {
+            animation: pulse 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🥚 たまごっち風アニメーション</h1>
+        <p class="subtitle">フレームアニメーションデモ</p>
+
+        <div class="character-stage">
+            <canvas id="character" width="32" height="32"></canvas>
+        </div>
+
+        <div class="controls">
+            <button class="btn-idle active" onclick="setAnimation('idle')">😊 待機</button>
+            <button class="btn-walk" onclick="setAnimation('walk')">🚶 歩く</button>
+            <button class="btn-eat" onclick="setAnimation('eat')">🍽️ 食べる</button>
+            <button class="btn-sleep" onclick="setAnimation('sleep')">😴 寝る</button>
+            <button class="btn-happy" onclick="setAnimation('happy')">🎉 喜ぶ</button>
+        </div>
+
+        <div class="info">
+            <p><strong>現在のモーション:</strong> <span id="current-animation">待機</span></p>
+            <p><strong>フレーム:</strong> <span id="current-frame">1</span> / <span id="total-frames">4</span></p>
+            <p><strong>FPS:</strong> 5 (200ms/フレーム)</p>
+        </div>
+
+        <div class="github-link">
+            <p>🔗 <a href="https://github.com/ximanuki/tamagotchi-demo" target="_blank">GitHub リポジトリ</a></p>
+        </div>
+    </div>
+
+    <script>
+        // スプライトシート設定
+        const FRAME_SIZE = 32;
+        const FRAME_RATE = 200; // ms
+        
+        // モーション定義
+        const ANIMATIONS = {
+            idle: { row: 0, frames: 4, name: '待機', loop: true },
+            walk: { row: 1, frames: 4, name: '歩く', loop: true },
+            eat: { row: 2, frames: 4, name: '食べる', loop: false },
+            sleep: { row: 3, frames: 3, name: '寝る', loop: true },
+            happy: { row: 4, frames: 4, name: '喜ぶ', loop: false }
+        };
+
+        // グローバル変数
+        let spriteSheet = new Image();
+        let canvas = document.getElementById('character');
+        let ctx = canvas.getContext('2d');
+        let currentAnimation = 'idle';
+        let currentFrame = 0;
+        let animationTimer = null;
+
+        // スプライトシート読み込み
+        spriteSheet.src = 'assets/character_spritesheet.png';
+        spriteSheet.onload = function() {
+            console.log('✅ スプライトシート読み込み完了');
+            startAnimation();
+        };
+
+        spriteSheet.onerror = function() {
+            console.error('❌ スプライトシート読み込み失敗');
+            // フォールバック: テキスト表示
+            ctx.fillStyle = '#667eea';
+            ctx.font = '12px Arial';
+            ctx.fillText('Loading...', 2, 16);
+        };
+
+        // フレーム描画
+        function drawFrame(animation, frame) {
+            const anim = ANIMATIONS[animation];
+            
+            // キャンバスクリア
+            ctx.clearRect(0, 0, FRAME_SIZE, FRAME_SIZE);
+            
+            // スプライトシートから該当フレームを切り出して描画
+            ctx.drawImage(
+                spriteSheet,
+                frame * FRAME_SIZE,      // ソースX
+                anim.row * FRAME_SIZE,   // ソースY
+                FRAME_SIZE,              // ソース幅
+                FRAME_SIZE,              // ソース高さ
+                0,                       // 描画先X
+                0,                       // 描画先Y
+                FRAME_SIZE,              // 描画先幅
+                FRAME_SIZE               // 描画先高さ
+            );
+
+            // UI更新
+            document.getElementById('current-frame').textContent = frame + 1;
+            document.getElementById('total-frames').textContent = anim.frames;
+        }
+
+        // アニメーション開始
+        function startAnimation() {
+            if (animationTimer) {
+                clearInterval(animationTimer);
+            }
+
+            const anim = ANIMATIONS[currentAnimation];
+            currentFrame = 0;
+
+            animationTimer = setInterval(() => {
+                drawFrame(currentAnimation, currentFrame);
+                
+                currentFrame++;
+                
+                if (currentFrame >= anim.frames) {
+                    if (anim.loop) {
+                        currentFrame = 0;
+                    } else {
+                        // ループしないアニメーションは最後のフレームで停止
+                        currentFrame = anim.frames - 1;
+                        clearInterval(animationTimer);
+                        // 2秒後に待機に戻る
+                        setTimeout(() => {
+                            setAnimation('idle');
+                        }, 2000);
+                    }
+                }
+            }, FRAME_RATE);
+        }
+
+        // モーション切り替え
+        function setAnimation(animation) {
+            if (currentAnimation === animation) return;
+            
+            currentAnimation = animation;
+            
+            // ボタンのアクティブ状態更新
+            document.querySelectorAll('.controls button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // UI更新
+            document.getElementById('current-animation').textContent = ANIMATIONS[animation].name;
+            
+            // アニメーション再起動
+            startAnimation();
+        }
+
+        // 初期化
+        console.log('🎮 たまごっちアニメーションシステム起動');
+    </script>
+</body>
+</html>
