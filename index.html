@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>たまごっち風デモ - このみちゃん専用</title>
+    <title>このみちゃんの たまごっち 🌸</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #FFE5EC 0%, #FFB3D9 50%, #E0BBE4 100%);
+            background: linear-gradient(135deg, #FFE5EC 0%, #FFC9E0 50%, #E5D4FF 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -25,343 +25,257 @@
             max-width: 375px;
             width: 100%;
             height: 667px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.3);
             border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            padding: 40px 20px;
+            box-shadow: 0 20px 60px rgba(255, 182, 193, 0.4);
+            padding: 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
             position: relative;
-            overflow: hidden;
-        }
-
-        .stars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
-        .star {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: #FFD700;
-            border-radius: 50%;
-            animation: twinkle 2s infinite ease-in-out;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.5); }
+            backdrop-filter: blur(10px);
         }
 
         h1 {
             color: #FF69B4;
-            font-size: 28px;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
-            z-index: 1;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
         }
 
-        .subtitle {
-            color: #FF1493;
-            font-size: 14px;
-            margin-bottom: 30px;
-            z-index: 1;
-        }
-
-        .character-container {
+        .game-screen {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(180deg, #FFF0F5 0%, #FFE4F0 100%);
+            border-radius: 20px;
+            border: 5px solid #FFB6C1;
             position: relative;
-            width: 160px;
-            height: 160px;
-            margin: 40px 0;
-            z-index: 1;
+            overflow: hidden;
+            box-shadow: inset 0 4px 10px rgba(255, 182, 193, 0.3);
         }
 
-        .character {
-            width: 128px;
-            height: 128px;
+        #character {
+            width: 256px;
+            height: 256px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: bounce 1.2s infinite ease-in-out;
+        }
+
+        .sprite {
+            width: 768px;
+            height: 256px;
+            background-image: url('assets/character_sprite.png');
+            background-size: 768px 256px;
+            animation: bounce 1s ease-in-out infinite;
         }
 
         @keyframes bounce {
-            0%, 100% { 
-                transform: translate(-50%, -50%) translateY(0px);
+            0%, 100% {
+                background-position: -512px 0;
             }
-            25% {
-                transform: translate(-50%, -50%) translateY(-8px);
+            33% {
+                background-position: -640px 0;
             }
-            50% {
-                transform: translate(-50%, -50%) translateY(0px);
-            }
-            75% {
-                transform: translate(-50%, -50%) translateY(4px);
+            66% {
+                background-position: -896px 0;
             }
         }
 
         .buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            margin-top: 30px;
+            display: flex;
             gap: 15px;
-            margin-top: 20px;
-            width: 100%;
-            max-width: 320px;
-            z-index: 1;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .btn {
-            padding: 15px 10px;
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
             border: none;
             border-radius: 15px;
-            font-size: 14px;
-            font-weight: bold;
             cursor: pointer;
+            font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #btnHappy {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
             color: white;
         }
 
-        .btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        #btnSleepy {
+            background: linear-gradient(135deg, #B0B0FF, #8080FF);
+            color: white;
         }
 
-        .btn-normal {
-            background: linear-gradient(135deg, #FF69B4, #FF1493);
+        #btnNormal {
+            background: linear-gradient(135deg, #FFB6C1, #FF69B4);
+            color: white;
         }
 
-        .btn-happy {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-        }
-
-        .btn-sleepy {
-            background: linear-gradient(135deg, #9370DB, #6A5ACD);
-        }
-
-        .status-bar {
-            width: 100%;
-            max-width: 320px;
-            margin-top: 30px;
-            padding: 20px;
-            background: rgba(255, 192, 203, 0.3);
-            border-radius: 15px;
-            z-index: 1;
-        }
-
-        .status-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            color: #8B008B;
-            font-weight: bold;
-        }
-
-        .hearts {
-            position: absolute;
-            font-size: 24px;
-            animation: float-up 2s ease-out forwards;
-            pointer-events: none;
-        }
-
-        @keyframes float-up {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-100px) scale(1.5);
-            }
-        }
-
-        .message {
+        .status {
             margin-top: 20px;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 10px;
-            color: #FF1493;
-            font-weight: bold;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 15px;
             text-align: center;
-            z-index: 1;
             width: 100%;
-            max-width: 320px;
+            max-width: 300px;
+        }
+
+        .status-text {
+            color: #FF69B4;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* デコレーション用の星 */
+        .star {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #FFD700, transparent);
+            border-radius: 50%;
+            animation: twinkle 2s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+        }
+
+        .star:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .star:nth-child(2) { top: 20%; right: 15%; animation-delay: 0.5s; }
+        .star:nth-child(3) { bottom: 15%; left: 20%; animation-delay: 1s; }
+        .star:nth-child(4) { bottom: 10%; right: 10%; animation-delay: 1.5s; }
+
+        /* ハッピーモード */
+        .happy .sprite {
+            background-position: -256px 0 !important;
+            animation: jump 0.5s ease-in-out;
+        }
+
+        @keyframes jump {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* スリーピーモード */
+        .sleepy .sprite {
+            background-position: -512px 0 !important;
+            animation: sleep 2s ease-in-out infinite;
+        }
+
+        @keyframes sleep {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        /* ノーマルモード */
+        .normal .sprite {
+            background-position: 0 0 !important;
+            animation: idle 3s ease-in-out infinite;
+        }
+
+        @keyframes idle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="stars" id="stars"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
         
-        <h1>✨ たまごっち ✨</h1>
-        <div class="subtitle">このみちゃん専用</div>
+        <h1>🌸 このみちゃんの たまごっち 🌸</h1>
         
-        <div class="character-container">
-            <img id="character" class="character" src="assets/character_normal.png" alt="キャラクター">
+        <div class="game-screen">
+            <div id="character" class="bounce">
+                <div class="sprite"></div>
+            </div>
         </div>
-        
+
         <div class="buttons">
-            <button class="btn btn-normal" onclick="changeExpression('normal')">
-                😊 ふつう
-            </button>
-            <button class="btn btn-happy" onclick="changeExpression('happy')">
-                😄 うれしい
-            </button>
-            <button class="btn btn-sleepy" onclick="changeExpression('sleepy')">
-                😴 ねむい
-            </button>
+            <button id="btnHappy">✨ なでなで</button>
+            <button id="btnSleepy">😴 ねんね</button>
+            <button id="btnNormal">🌸 げんき</button>
         </div>
-        
-        <div class="status-bar">
-            <div class="status-item">
-                <span>❤️ げんき</span>
-                <span id="health">100%</span>
-            </div>
-            <div class="status-item">
-                <span>😊 きぶん</span>
-                <span id="mood">ごきげん♪</span>
-            </div>
-            <div class="status-item">
-                <span>⏰ じかん</span>
-                <span id="time">00:00</span>
-            </div>
-        </div>
-        
-        <div class="message" id="message">
-            ボタンをおして、あそんでね！
+
+        <div class="status">
+            <div class="status-text" id="statusText">げんきに ぴょこぴょこ 中♪</div>
         </div>
     </div>
 
     <script>
-        // 星を生成
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            for (let i = 0; i < 20; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 2 + 's';
-                starsContainer.appendChild(star);
-            }
+        const character = document.getElementById('character');
+        const statusText = document.getElementById('statusText');
+        const btnHappy = document.getElementById('btnHappy');
+        const btnSleepy = document.getElementById('btnSleepy');
+        const btnNormal = document.getElementById('btnNormal');
+
+        let currentMode = 'bounce';
+
+        function setMode(mode, status) {
+            character.className = mode;
+            currentMode = mode;
+            statusText.textContent = status;
         }
 
-        // 表情変更
-        const expressions = {
-            normal: {
-                image: 'assets/character_normal.png',
-                message: 'げんきだよ！',
-                mood: 'げんき'
-            },
-            happy: {
-                image: 'assets/character_happy.png',
-                message: 'やったー！うれしい！💕',
-                mood: 'だいすき♥'
-            },
-            sleepy: {
-                image: 'assets/character_sleepy.png',
-                message: 'ねむいよ...zzz',
-                mood: 'ねむねむ'
-            }
-        };
-
-        function changeExpression(type) {
-            const character = document.getElementById('character');
-            const message = document.getElementById('message');
-            const mood = document.getElementById('mood');
-            const expr = expressions[type];
-            
-            // 表情変更
-            character.src = expr.image;
-            message.textContent = expr.message;
-            mood.textContent = expr.mood;
-            
-            // ハートエフェクト
-            if (type === 'happy') {
-                createHearts();
-            }
-            
-            // 効果音（将来的に追加可能）
-            playSound(type);
-        }
-
-        // ハートエフェクト
-        function createHearts() {
-            const container = document.querySelector('.character-container');
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.className = 'hearts';
-                    heart.textContent = '💕';
-                    heart.style.left = Math.random() * 100 + 'px';
-                    heart.style.top = '50%';
-                    container.appendChild(heart);
-                    
-                    setTimeout(() => heart.remove(), 2000);
-                }, i * 200);
-            }
-        }
-
-        // 効果音プレースホルダー
-        function playSound(type) {
-            // 将来的に音声を追加可能
-            console.log(`Sound: ${type}`);
-        }
-
-        // 時計更新
-        function updateTime() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('time').textContent = `${hours}:${minutes}`;
-        }
-
-        // ランダムメッセージ
-        const randomMessages = [
-            'あそんでくれてありがとう！',
-            'このみちゃん、だいすき！',
-            'たのしいね～♪',
-            'もっとあそぼう！',
-            'きょうもいいてんき！'
-        ];
-
-        function showRandomMessage() {
-            const message = document.getElementById('message');
-            const randomMsg = randomMessages[Math.floor(Math.random() * randomMessages.length)];
-            message.textContent = randomMsg;
-            
+        btnHappy.addEventListener('click', () => {
+            setMode('happy', 'やったー！ うれしい～ 💕');
             setTimeout(() => {
-                message.textContent = 'ボタンをおして、あそんでね！';
+                if (currentMode === 'happy') {
+                    setMode('bounce', 'げんきに ぴょこぴょこ 中♪');
+                }
             }, 3000);
-        }
+        });
 
-        // 初期化
-        createStars();
-        updateTime();
-        setInterval(updateTime, 1000);
-        setInterval(showRandomMessage, 15000);
-        
-        // ページロード時のウェルカムメッセージ
-        setTimeout(() => {
-            document.getElementById('message').textContent = 'こんにちは！あそぼう～♪';
+        btnSleepy.addEventListener('click', () => {
+            setMode('sleepy', 'すやすや... おやすみなさい 😴');
+        });
+
+        btnNormal.addEventListener('click', () => {
+            setMode('normal', 'げんきいっぱい！ 🌸');
             setTimeout(() => {
-                document.getElementById('message').textContent = 'ボタンをおして、あそんでね！';
-            }, 2000);
-        }, 500);
+                if (currentMode === 'normal') {
+                    setMode('bounce', 'げんきに ぴょこぴょこ 中♪');
+                }
+            }, 3000);
+        });
+
+        // ランダムな自動アクション
+        setInterval(() => {
+            if (currentMode === 'bounce' && Math.random() > 0.7) {
+                const actions = [
+                    { mode: 'happy', text: 'わ～い！ 💕', duration: 2000 },
+                    { mode: 'normal', text: 'きょろきょろ 👀', duration: 2000 }
+                ];
+                const action = actions[Math.floor(Math.random() * actions.length)];
+                setMode(action.mode, action.text);
+                setTimeout(() => {
+                    if (currentMode === action.mode) {
+                        setMode('bounce', 'げんきに ぴょこぴょこ 中♪');
+                    }
+                }, action.duration);
+            }
+        }, 5000);
     </script>
 </body>
 </html>
